@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e8ddff">
+<title>ZİPŞAK MATEMATİK — Level 1</title>
+<style>
+  :root{
+    --ink:#302b50; --muted:#77718f; --mint:#e8e0ff; --sky:#dceaff;
+    --lav:#e5d8ff; --peach:#ffe0ef; --yellow:#fff0cc; --pink:#ffd9eb;
+    --white:#ffffff; --green:#9bd8e8; --purple:#9a83df; --coral:#ef9ac7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace; background-color:#f5efff;background-image:linear-gradient(#d9ceff55 1px,transparent 1px),linear-gradient(90deg,#d9ceff55 1px,transparent 1px);background-size:18px 18px}
+  .wrap{max-width:1050px;margin:auto;padding:22px 16px 36px}
+  header{text-align:center;margin:6px auto 18px}
+  .eyebrow{display:inline-block;padding:7px 13px;border-radius:3px;background:#fff8ff;border:2px solid #cbbcff;box-shadow:3px 3px 0 #b9d9ff;color:#68778a;font-size:.82rem;font-weight:800;letter-spacing:.08em}
+  h1{font-size:clamp(2rem,5vw,3.5rem);margin:10px 0 5px;letter-spacing:.06em;font-family:ui-monospace,monospace;font-weight:1000;text-transform:uppercase;text-shadow:3px 3px 0 #cbbcff,6px 6px 0 #cce8ff;image-rendering:pixelated}
+  h1 span{color:#8b6ed0;display:inline-block;letter-spacing:.04em}
+  .pixel-title{display:inline-block;padding:5px 10px;border:4px solid #8b6ed0;box-shadow:4px 4px 0 #cbbcff;background:#fff8ff;clip-path:polygon(0 5px,5px 5px,5px 0,calc(100% - 5px) 0,calc(100% - 5px) 5px,100% 5px,100% calc(100% - 5px),calc(100% - 5px) calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,5px calc(100% - 5px),0 calc(100% - 5px))}
+  .subtitle{color:var(--muted);margin:0 auto;max-width:600px;line-height:1.6}
+  .game-shell{background:rgba(255,255,255,.88);border:1px solid #e3eaf0;border-radius:4px;padding:10px;border:3px solid #b7a5ef;box-shadow:6px 6px 0 #c7dfff}
+  .game-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 7px 12px;flex-wrap:wrap}
+  .level-tag{background:var(--lav);color:#6452a2;border-radius:2px;padding:8px 12px;border:2px solid #b5a5ef;font-weight:900}
+  .tip{font-size:.9rem;color:var(--muted)}
+  #game{width:100%;display:block;border-radius:2px;background:#e8e0ff;touch-action:manipulation;image-rendering:pixelated;border:3px solid #a995e8}
+  .controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:14px 0 4px}
+  button{border:0;border-radius:3px;padding:12px 19px;border:2px solid #8b78c8;font:inherit;font-weight:900;cursor:pointer;transition:transform .15s,filter .15s;box-shadow:4px 4px 0 #b9a8e8}
+  button:hover{filter:brightness(.98);transform:translateY(-1px)}
+  button:active{transform:translateY(2px);box-shadow:0 2px 0 #00000012}
+  .primary{background:#c7b5ff;color:#34265e}.secondary{background:#cce8ff;color:#28486d}.jump{background:#ffcce4;color:#6b3156;min-width:140px}
+  button:focus-visible{outline:3px solid #475f9b;outline-offset:3px}
+  .below{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;margin-top:13px}
+  .panel{background:#ffffffd9;border:2px solid #ded3ff;border-radius:6px;padding:17px}
+  .panel h2{font-size:1rem;margin:0 0 8px}
+  .panel p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.55}
+  .example{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{border-radius:4px;padding:7px 10px;font-weight:900;font-size:.9rem;background:#e8e0ff;color:#51427f;border:1px solid #d4c6ff}
+  .notice{min-height:25px;margin:10px 5px 0;text-align:center;font-weight:800;color:#56786c}
+  .mobile-note{text-align:center;color:#788796;font-size:.8rem;margin:12px 0 0}
+  .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:#e8e0ffdf;border-radius:2px}
+  .overlay-card{max-width:460px;text-align:center;background:linear-gradient(145deg,#fff 0%,#f7f0ff 55%,#edf5ff 100%);padding:30px;border:2px solid #e4d9ff;border-radius:4px;box-shadow:6px 6px 0 #cbbcff}
+  .overlay-card h2{font-size:1.8rem;margin:0 0 8px;color:#6f5ba7}.overlay-card p{color:var(--muted);line-height:1.6}
+  .name-input{width:min(100%,320px);padding:12px;border:3px solid #b9a8ef;background:#fffaff;color:var(--ink);font:inherit;font-weight:800;text-align:center;outline:none;margin:4px 0 14px;border-radius:3px}
+  .leaderboard{margin-top:18px;background:#fffaff;border:3px solid #b7a5ef;box-shadow:6px 6px 0 #c7dfff;padding:18px}
+  .leaderboard h2{margin:0 0 6px;font-size:1.2rem;letter-spacing:.04em;color:#6f5ba7}
+  .leaderboard .small-note{font-size:.8rem;line-height:1.5;color:var(--muted);margin:0 0 12px}
+  .score-table{width:100%;border-collapse:collapse;font-size:.9rem}
+  .score-table th,.score-table td{text-align:left;padding:10px 8px;border-bottom:2px dashed #e2d9ff}
+  .score-table th{color:#6f5ba7;background:#f1ebff}
+  .score-table td:last-child,.score-table th:last-child{text-align:right;font-weight:900}
+  .empty-score{text-align:center;color:var(--muted);padding:16px 6px}
+  .more-scores-wrap{text-align:center;margin-top:12px}
+  .more-scores{font-family:monospace;text-transform:uppercase;letter-spacing:.03em;border:2px solid #b9a8ef;background:#eee7ff;color:#65529d;padding:11px 16px;box-shadow:4px 4px 0 #c7dfff}
+  .leaderboard-count{font:700 .78rem monospace;color:#8274b1;text-align:center;margin-top:9px}
+  .online-setup{margin-top:14px;padding:13px;border:2px dashed #cbbcff;background:#f8f4ff}
+  .online-setup label{display:block;font-size:.8rem;font-weight:900;color:#6f5ba7;margin-bottom:7px}
+  .online-row{display:flex;gap:8px;flex-wrap:wrap}
+  .online-row input{flex:1;min-width:220px;padding:10px;border:2px solid #b9a8ef;background:#fffaff;color:var(--ink);font:inherit;font-size:.8rem}
+  #onlineStatus{font-size:.78rem;color:var(--muted);margin:8px 0 0;line-height:1.5}
+  .canvas-wrap{position:relative}
+  @media(max-width:650px){.wrap{padding:15px 10px 25px}.tip{width:100%}.game-shell{padding:8px}.game-top{padding:4px 3px 10px}}
+
+  .game-shell:fullscreen{width:100vw;height:100vh;max-width:none;padding:14px;border:0;border-radius:0;background:#eee8ff;display:flex;flex-direction:column;justify-content:center;box-shadow:none}
+  .game-shell:fullscreen .canvas-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+  .game-shell:fullscreen #game{height:100%;max-height:calc(100vh - 150px);width:auto;max-width:100%;aspect-ratio:960/340}
+  .game-shell:fullscreen .game-top{flex-shrink:0}
+  .game-shell:fullscreen .controls{flex-shrink:0}
+  .game-shell:fullscreen .overlay{position:absolute}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">▰ 8-BIT MATEMATİK MACERASI ▰</div>
+    <h1><span class="pixel-title">ZİPŞAK <span>MATEMATİK</span></span></h1>
+    <p class="subtitle">Piksel hamsinle asal sayıları yakala, asal olmayanlardan kaçın! Hazırsan Level 1 başlıyor.</p>
+  </header>
+
+  <main class="game-shell">
+    <div class="game-top"><span class="level-tag">LEVEL 1 · ASAL SAYILAR</span><span class="tip">Zıpla: <b>Boşluk</b> / <b>↑</b> / ekrana dokun</span></div>
+    <div class="canvas-wrap">
+      <canvas id="game" width="960" height="340" aria-label="Asal sayıları yakalama oyunu"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="overlay-card">
+          <div style="font-size:2.6rem;letter-spacing:5px">🩷 🐟 💜</div>
+          <div style="font-size:.78rem;font-weight:900;letter-spacing:.13em;color:#9584c7;margin:8px 0;font-family:monospace">8-BIT OYUN • LEVEL 01</div>
+          <h2 style="font-family:monospace;letter-spacing:.04em;text-transform:uppercase;text-shadow:2px 2px 0 #cce8ff">ZİPŞAK MATEMATİK</h2>
+          <p>Hamsini zıplat, asal sayıları yakala! Asal olmayan bir sayıyı yakalarsan kalbin azalır. Kullanıcı adını seç ve skor tablosunda yerini al.</p>
+          <label for="usernameInput" style="display:block;font-size:.82rem;font-weight:900;color:#6f5ba7;margin-top:12px">OYUNCU ADIN</label>
+          <input class="name-input" id="usernameInput" maxlength="16" autocomplete="nickname" placeholder="Örn. PikselKralı" aria-label="Oyuncu adı">
+          <br><button class="primary" id="startBtn">Oyuna Başla ▶</button>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="jump" id="jumpBtn">🐟 Zıpla!</button>
+      <button class="secondary" id="pauseBtn">⏸ Duraklat</button>
+      <button class="primary" id="restartBtn">↻ Yeniden Başlat</button>
+      <button class="secondary" id="fullscreenBtn">⛶ Tam Ekran</button>
+    </div>
+    <div class="notice" id="notice" aria-live="polite">İpucu: 2, 3, 5 ve 7 asal sayılardır.</div>
+  </main>
+
+  <section class="leaderboard" aria-labelledby="leaderboardTitle">
+    <h2 id="leaderboardTitle">🏆 PİKSEL SKOR TABLOSU</h2>
+    <p class="small-note">Önce ilk 10 oyuncu görünür. “Daha fazlası için tıkla” ile ilk 100 oyuncuyu görüntüleyebilirsin. Aynı oyuncunun yalnızca en yüksek skoru listelenir.</p>
+    <div id="leaderboardContent"></div>
+    <div class="online-setup">
+      <label for="databaseUrl">🌐 ORTAK SKOR TABLOSU · FIREBASE DATABASE URL</label>
+      <div class="online-row"><input id="databaseUrl" type="url" placeholder="https://proje-adi-default-rtdb.firebaseio.com" autocomplete="url"><button class="secondary" id="connectOnlineBtn">Bağlan</button></div>
+      <p id="onlineStatus" aria-live="polite">Şimdilik bu cihazda kayıt yapılıyor. Ortak tablo için bir Firebase Realtime Database URL'si gerekir.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const startBtn = document.getElementById('startBtn');
+  const usernameInput = document.getElementById('usernameInput');
+  const leaderboardContent = document.getElementById('leaderboardContent');
+  const databaseUrlInput = document.getElementById('databaseUrl');
+  const connectOnlineBtn = document.getElementById('connectOnlineBtn');
+  const onlineStatus = document.getElementById('onlineStatus');
+  const jumpBtn = document.getElementById('jumpBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const heartsEl = document.getElementById('hearts');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const notice = document.getElementById('notice');
+
+  const W = 960, H = 340, groundY = 278;
+  ctx.imageSmoothingEnabled = false;
+  let running = false, started = false, over = false, paused = false;
+  let lastTime = 0, spawnTimer = 1.9, speed = 235, score = 0, caught = 0, lives = 5, elapsed = 0;
+  let obstacles = [], particles = [];
+  // Each number appears at most once in this Level 1 run.
+  const NUMBER_POOL = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,21,23,25];
+  let numberDeck = [], nextNumberIndex = 0;
+  let currentUser = '';
+  const LEADERBOARD_KEY = 'zipsakMatematikLeaderboardV1';
+  const DATABASE_URL_KEY = 'zipsakMatematikFirebaseUrlV1';
+  let databaseUrl = '';
+  let onlineBusy = false;
+  let showTop100 = false;
+  const fish = {x:76, y:groundY-34, w:44, h:30, vy:0, onGround:true};
+  const gravity = 1450, jumpPower = -690;
+  const isPrime = n => { if(n < 2) return false; for(let i=2;i<=Math.sqrt(n);i++) if(n%i===0) return false; return true; };
+
+  function resizeCanvas(){
+    // Keep a stable game coordinate system while allowing responsive display.
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = W * ratio; canvas.height = H * ratio;
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function updateHUD(){
+    // Hearts are rendered directly inside the game canvas.
+  }
+  function reset(){
+    running=false; started=false; over=false; paused=false; lastTime=0; spawnTimer=.7;
+    speed=235; score=0; caught=0; lives=5; elapsed=0; obstacles=[]; particles=[];
+    numberDeck=[...NUMBER_POOL].sort(()=>Math.random()-.5); nextNumberIndex=0;
+    fish.y=groundY-fish.h; fish.vy=0; fish.onGround=true;
+    pauseBtn.textContent='⏸ Duraklat'; updateHUD();
+    overlay.style.display='flex';
+    overlay.querySelector('h2').textContent='ZİPŞAK MATEMATİK';
+    overlay.querySelector('p').textContent='Piksel hamsini zıplat, asal sayıları yakala! Asal olmayan sayılara çarpmamaya çalış. Oyunun içinde kalan canlarını takip et.';
+    startBtn.textContent='Oyuna Başla ▶';
+    usernameInput.style.display='inline-block';
+    overlay.querySelector('label[for="usernameInput"]').style.display='block';
+    notice.textContent='İpucu: Sayıların rengi aynı — kararını kendin ver!';
+    draw();
+  }
+  function begin(){
+    if(over) reset();
+    const enteredName = usernameInput.value.trim().replace(/\s+/g, ' ');
+    if(!enteredName){
+      usernameInput.focus();
+      usernameInput.setCustomValidity('Başlamadan önce bir oyuncu adı yaz.');
+      usernameInput.reportValidity();
+      return;
+    }
+    usernameInput.setCustomValidity('');
+    currentUser = enteredName.slice(0,16);
+    overlay.style.display='none'; running=true; started=true; paused=false;
+    pauseBtn.textContent='⏸ Duraklat'; lastTime=0;
+    notice.textContent='Hamsin hazır! Zıplamak için Boşluk, ↑ veya Zıpla düğmesi.';
+    requestAnimationFrame(loop);
+  }
+  function jump(){
+    if(!started || over){ if(!started) begin(); return; }
+    if(paused){ paused=false; running=true; pauseBtn.textContent='⏸ Duraklat'; lastTime=0; requestAnimationFrame(loop); }
+    if(fish.onGround){ burst(fish.x+18,groundY-2,'#cbbcff'); fish.vy=jumpPower; fish.onGround=false; fish.jumpSquash=1; }
+  }
+  function spawn(){
+    // Use each number once; when the deck is empty, no new numbers appear.
+    if(nextNumberIndex >= numberDeck.length) return;
+    const n=numberDeck[nextNumberIndex++];
+    obstacles.push({x:W+25,y:groundY-22,r:14,n,prime:isPrime(n),hit:false,phase:Math.random()*6.28});
+  }
+  function burst(x,y,color){
+    for(let i=0;i<12;i++) particles.push({x,y,vx:(Math.random()-.5)*200,vy:(Math.random()-.8)*180,life:.5,color});
+  }
+  function loseLife(){
+    lives--; updateHUD(); burst(fish.x+fish.w/2,fish.y+fish.h/2,'#f28d9a');
+    if(lives<=0) endGame(false);
+    else { notice.textContent='Bir kalp eksildi. Sayıları dikkatle incele!'; }
+  }
+  function readLeaderboard(){
+    try { const data=JSON.parse(localStorage.getItem(LEADERBOARD_KEY)||'[]'); return Array.isArray(data)?data:[]; }
+    catch(e){ return []; }
+  }
+  function mergeEntries(...lists){
+    const merged=new Map();
+    for(const list of lists){
+      if(!Array.isArray(list)) continue;
+      for(const item of list){
+        if(!item || typeof item.name!=='string' || !Number.isFinite(Number(item.score))) continue;
+        const name=item.name.trim().replace(/\s+/g,' ').slice(0,16);
+        if(!name) continue;
+        const key=name.toLocaleLowerCase('tr');
+        const score=Math.max(0,Math.floor(Number(item.score)));
+        const old=merged.get(key);
+        if(!old || score>old.score) merged.set(key,{name,score});
+      }
+    }
+    return [...merged.values()].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name,'tr')).slice(0,100);
+  }
+  function renderLeaderboard(){
+    const allEntries=readLeaderboard().sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name,'tr')).slice(0,100);
+    const entries=allEntries.slice(0,showTop100?100:10);
+    if(!allEntries.length){
+      leaderboardContent.innerHTML='<div class="empty-score">Henüz skor yok. İlk rekoru sen yap! ✨</div>';
+      return;
+    }
+    const table=document.createElement('table'); table.className='score-table';
+    const thead=document.createElement('thead'); const headRow=document.createElement('tr');
+    ['SIRA','OYUNCU','SKOR'].forEach(label=>{const th=document.createElement('th');th.textContent=label;headRow.appendChild(th);});
+    thead.appendChild(headRow); table.appendChild(thead);
+    const tbody=document.createElement('tbody');
+    entries.forEach((entry,index)=>{const tr=document.createElement('tr');
+      const rank=document.createElement('td');rank.textContent=['🥇','🥈','🥉'][index]||String(index+1);
+      const name=document.createElement('td');name.textContent=entry.name;
+      const points=document.createElement('td');points.textContent=String(entry.score);
+      tr.append(rank,name,points);tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    const wrap=document.createElement('div'); wrap.appendChild(table);
+    if(allEntries.length>10){
+      const buttonWrap=document.createElement('div');buttonWrap.className='more-scores-wrap';
+      const button=document.createElement('button');button.className='more-scores';
+      button.textContent=showTop100?'İlk 10 oyuncuyu göster ▲':'Daha fazlası için tıkla ▼';
+      button.addEventListener('click',()=>{showTop100=!showTop100;renderLeaderboard();});
+      buttonWrap.appendChild(button);wrap.appendChild(buttonWrap);
+    }
+    if(showTop100){const count=document.createElement('div');count.className='leaderboard-count';count.textContent='İLK '+allEntries.length+' OYUNCU';wrap.appendChild(count);}
+    leaderboardContent.replaceChildren(wrap);
+  }
+  function databaseEndpoint(){ return databaseUrl.replace(/\/$/,'') + '/leaderboard.json'; }
+  async function syncOnline(){
+    if(!databaseUrl || onlineBusy) return;
+    onlineBusy=true;
+    try{
+      onlineStatus.textContent='Çevrim içi skorlar eşitleniyor…';
+      const response=await fetch(databaseEndpoint(),{cache:'no-store'});
+      if(!response.ok) throw new Error('Veritabanı okunamadı ('+response.status+').');
+      const remote=await response.json();
+      const combined=mergeEntries(readLeaderboard(),Array.isArray(remote)?remote:[]);
+      localStorage.setItem(LEADERBOARD_KEY,JSON.stringify(combined));
+      const write=await fetch(databaseEndpoint(),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(combined)});
+      if(!write.ok) throw new Error('Veritabanına yazılamadı ('+write.status+'). Firebase kurallarını kontrol et.');
+      renderLeaderboard();
+      onlineStatus.textContent='✓ Çevrim içi skor tablosuna bağlandı. Bu adresi kullanan oyuncular ortak sıralamayı görür.';
+    }catch(err){
+      onlineStatus.textContent='Çevrim içi bağlantı kurulamadı. URL ve Firebase erişim kurallarını kontrol et. Yerel skorlar bu cihazda çalışmaya devam ediyor.';
+    }finally{ onlineBusy=false; }
+  }
+  async function saveScore(){
+    if(!currentUser) return;
+    const entries=mergeEntries(readLeaderboard(),[{name:currentUser,score}]);
+    try{localStorage.setItem(LEADERBOARD_KEY,JSON.stringify(entries));}catch(e){}
+    renderLeaderboard();
+    if(databaseUrl){
+      try{
+        onlineStatus.textContent='Skorun çevrim içi tabloya gönderiliyor…';
+        const response=await fetch(databaseEndpoint(),{cache:'no-store'});
+        if(!response.ok) throw new Error('read failed');
+        const remote=await response.json();
+        const combined=mergeEntries(Array.isArray(remote)?remote:[],entries);
+        const write=await fetch(databaseEndpoint(),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(combined)});
+        if(!write.ok) throw new Error('write failed');
+        localStorage.setItem(LEADERBOARD_KEY,JSON.stringify(combined));renderLeaderboard();
+        onlineStatus.textContent='✓ Skorun ortak çevrim içi tabloya kaydedildi!';
+      }catch(e){onlineStatus.textContent='Skor bu cihazda kaydedildi ancak çevrim içi tabloya gönderilemedi. Firebase ayarlarını kontrol et.';}
+    }
+  }
+  connectOnlineBtn.addEventListener('click',()=>{
+    const value=databaseUrlInput.value.trim().replace(/\/$/,'');
+    if(!/^https:\/\/[a-zA-Z0-9.-]+\.firebaseio\.com$/.test(value) && !/^https:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+\.firebasedatabase\.app$/.test(value)){
+      onlineStatus.textContent='Geçerli Firebase Realtime Database adresini gir. Örnek: https://proje-adi-default-rtdb.firebaseio.com';return;
+    }
+    databaseUrl=value;
+    try{localStorage.setItem(DATABASE_URL_KEY,databaseUrl);}catch(e){}
+    syncOnline();
+  });
+  databaseUrlInput.addEventListener('keydown',e=>{if(e.key==='Enter')connectOnlineBtn.click();});
+  function endGame(won){
+    running=false; over=true; saveScore(); overlay.style.display='flex';
+    usernameInput.style.display='none';
+    overlay.querySelector('label[for="usernameInput"]').style.display='none';
+    overlay.querySelector('h2').textContent=won?'Level 1 tamamlandı! 🎉':'Canların bitti!';
+    overlay.querySelector('p').textContent=`${currentUser} • Puanın: ${score}. ${won?'Level 1’deki tüm sayılar tamamlandı!':'Canların bitti. Tekrar deneyip rekorunu geliştirebilirsin.'} Skor tablosu güncellendi.`;
+    startBtn.textContent='Tekrar Oyna ↻';
+  }
+  function update(dt){
+    elapsed+=dt; speed=Math.min(330,235+elapsed*1.25);
+    fish.vy+=gravity*dt; fish.y+=fish.vy*dt;
+    if(fish.y>=groundY-fish.h){if(!fish.onGround && fish.vy>120) burst(fish.x+20,groundY-2,'#f7c8e5');fish.y=groundY-fish.h;fish.vy=0;fish.onGround=true;}
+    spawnTimer-=dt;
+    if(spawnTimer<=0){spawn();spawnTimer=Math.max(1.25,1.85-Math.random()*.22-elapsed*.002);}
+    for(const o of obstacles){
+      o.x-=speed*dt;o.phase+=dt*3;
+      const fx=fish.x+fish.w*.58, fy=fish.y+fish.h*.52;
+      const ox=o.x, oy=o.y;
+      const dx=fx-ox, dy=fy-oy;
+      if(!o.hit && Math.abs(dx)<o.r+fish.w*.20 && Math.abs(dy)<o.r+fish.h*.22){
+        o.hit=true; burst(o.x,o.y,'#a18ae8');
+        if(o.prime){score+=10;caught++;updateHUD();notice.textContent='+10 puan! ⭐';}
+        else loseLife();
+      }
+    }
+    obstacles=obstacles.filter(o=>o.x>-50 && !o.hit);
+    particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=400*dt;p.life-=dt;});
+    particles=particles.filter(p=>p.life>0);
+    // Stop Level 1 after every number has appeared and the final one has left the field.
+    if(nextNumberIndex >= numberDeck.length && obstacles.length === 0 && running) endGame(true);
+  }
+
+  function roundedRect(x,y,w,h,r,fill){
+    ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();
+  }
+  function drawFish(){
+    // Small 8-bit anchovy sprite, drawn from crisp square pixels.
+    const x=Math.round(fish.x), y=Math.round(fish.y);
+    ctx.imageSmoothingEnabled=false;
+    ctx.fillStyle='#c9c4f5';ctx.fillRect(x+9,groundY+2,29,4);
+    // tiny orange feet
+    ctx.fillStyle='#d98baf';ctx.fillRect(x+12,y+25,4,7);ctx.fillRect(x+28,y+25,4,7);
+    ctx.fillRect(x+9,y+30,8,3);ctx.fillRect(x+26,y+30,8,3);
+    // tail fin
+    ctx.fillStyle='#a9a2e8';ctx.fillRect(x+1,y+10,6,5);ctx.fillRect(x+4,y+6,5,5);ctx.fillRect(x+4,y+15,5,5);
+    // silvery anchovy body in stepped pixel blocks
+    ctx.fillStyle='#9ab9ee';ctx.fillRect(x+7,y+8,7,14);ctx.fillRect(x+14,y+5,17,20);ctx.fillRect(x+31,y+8,6,14);ctx.fillRect(x+37,y+11,4,8);
+    ctx.fillStyle='#d9e6ff';ctx.fillRect(x+12,y+8,17,5);ctx.fillRect(x+16,y+13,16,5);ctx.fillRect(x+12,y+18,17,4);
+    // top fin and gill
+    ctx.fillStyle='#b5a5ef';ctx.fillRect(x+17,y+2,5,4);ctx.fillRect(x+22,y+4,5,3);
+    ctx.fillStyle='#7588c9';ctx.fillRect(x+30,y+12,2,7);
+    // eye and tiny smile
+    ctx.fillStyle='#283747';ctx.fillRect(x+35,y+11,3,3);ctx.fillStyle='#fff';ctx.fillRect(x+36,y+11,1,1);
+    ctx.fillStyle='#8b78c8';ctx.fillRect(x+38,y+19,3,2);
+  }
+  function drawPixelHeart(x,y,filled){
+    const pixels=[['.','#','#','.','.','#','#','.'],['#','#','#','#','#','#','#','#'],['#','#','#','#','#','#','#','#'],['.','#','#','#','#','#','#','.'],['.','.','#','#','#','#','.','.'],['.','.','.','#','#','.','.','.']];
+    const color=filled?'#ee5b9b':'#c9c3df', shade=filled?'#b82e70':'#aaa3c7', px=3;
+    pixels.forEach((row,ry)=>row.forEach((v,cx)=>{if(v==='#'){ctx.fillStyle=(filled&&ry===1&&cx===1)?'#ffb6dc':color;ctx.fillRect(x+cx*px,y+ry*px,px,px);}}));
+    if(filled){ctx.fillStyle=shade;ctx.fillRect(x+3*px,y+4*px,2*px,px);}
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // sky gradient
+    ctx.imageSmoothingEnabled=false; ctx.fillStyle='#e9e2ff';ctx.fillRect(0,0,W,H); ctx.fillStyle='#dcecff';ctx.fillRect(0,0,W,145);
+    // pastel clouds
+    for(let i=0;i<5;i++){
+      const x=((i*220+80-(elapsed*12)%1100)+1100)%1100-60,y=45+(i%3)*36;
+      ctx.fillStyle='#fff8ff';ctx.fillRect(Math.round(x/6)*6,y,36,12);ctx.fillRect(Math.round(x/6)*6+6,y-6,24,6);ctx.fillRect(Math.round(x/6)*6+12,y+12,18,6);
+    }
+    // rolling hills
+    ctx.fillStyle='#d5ccff';ctx.fillRect(0,groundY-66,W,24);ctx.fillRect(0,groundY-42,180,18);ctx.fillRect(300,groundY-42,240,18);ctx.fillRect(690,groundY-42,270,18);
+    ctx.fillStyle='#b9d9ff';ctx.fillRect(0,groundY-20,W,20);
+    // pixel ground
+    ctx.fillStyle='#a8c9f7';ctx.fillRect(0,groundY,W,H-groundY);
+    ctx.fillStyle='#8fabea';ctx.fillRect(0,groundY,W,6);
+    for(let i=0;i<30;i++){let x=(i*39-(elapsed*speed*.38)%1170+1170)%1170;ctx.fillStyle=i%2?'#829fe0':'#d0ddff';ctx.fillRect(Math.round(x/6)*6,groundY+24+(i%3)*13,6,4);}
+    // In-game life counter, always visible while playing
+    // Pixel HUD: Minecraft-inspired hearts only (no 'CAN:' label), plus score.
+    ctx.fillStyle='#fff8ff';ctx.fillRect(12,12,250,40);
+    ctx.strokeStyle='#8b78c8';ctx.lineWidth=3;ctx.strokeRect(12,12,250,40);
+    for(let i=0;i<5;i++) drawPixelHeart(25+i*28,20,i<lives);
+    ctx.fillStyle='#4f4779';ctx.font='900 18px monospace';ctx.textAlign='right';ctx.textBaseline='middle';
+    ctx.fillText('★ '+score,W-20,32);
+    // numbers
+    for(const o of obstacles){
+      ctx.fillStyle='#b9a8f2';ctx.fillRect(Math.round((o.x-o.r)/6)*6,Math.round((o.y-o.r)/6)*6,o.r*2+6,o.r*2+6);
+      ctx.fillStyle='#cbbcff';ctx.fillRect(Math.round((o.x-o.r)/6)*6,Math.round((o.y-o.r)/6)*6,o.r*2,o.r*2);
+      ctx.fillStyle='#5a4b88';ctx.font='900 24px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.n,Math.round(o.x/6)*6,Math.round(o.y/6)*6+1);
+    }
+    drawFish();
+    for(const p of particles){ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle=p.color;ctx.fillRect(Math.round(p.x/4)*4,Math.round(p.y/4)*4,4,4);ctx.globalAlpha=1;}
+    if(!started && !over){
+      ctx.fillStyle='#5a4b88';ctx.font='800 18px monospace';ctx.textAlign='center';ctx.fillText('Asal sayıları yakalamaya hazır mısın?',W/2,250);
+    }
+  }
+  function loop(timestamp){
+    if(!running || paused) return;
+    if(!lastTime) lastTime=timestamp;
+    const dt=Math.min((timestamp-lastTime)/1000,.035);lastTime=timestamp;
+    update(dt);draw();
+    if(running) requestAnimationFrame(loop);
+  }
+
+  startBtn.addEventListener('click',begin);
+  jumpBtn.addEventListener('click',jump);
+  canvas.addEventListener('pointerdown',()=>{if(started&&!over)jump();});
+  pauseBtn.addEventListener('click',()=>{
+    if(!started||over)return;
+    paused=!paused;
+    if(paused){running=false;pauseBtn.textContent='▶ Devam Et';notice.textContent='Oyun duraklatıldı.';}
+    else{running=true;lastTime=0;pauseBtn.textContent='⏸ Duraklat';requestAnimationFrame(loop);}
+  });
+  restartBtn.addEventListener('click',reset);
+  fullscreenBtn.addEventListener('click',async()=>{
+    const target=document.querySelector('.game-shell');
+    try{if(!document.fullscreenElement){await target.requestFullscreen();fullscreenBtn.textContent='⛶ Tam Ekrandan Çık';}else{await document.exitFullscreen();fullscreenBtn.textContent='⛶ Tam Ekran';}}catch(e){notice.textContent='Tam ekran bu tarayıcıda desteklenmiyor.';}
+  });
+  document.addEventListener('fullscreenchange',()=>{fullscreenBtn.textContent=document.fullscreenElement?'⛶ Tam Ekrandan Çık':'⛶ Tam Ekran';});
+  document.addEventListener('keydown',e=>{
+    if(e.code==='Space'||e.code==='ArrowUp'){
+      e.preventDefault();
+      if(e.repeat)return;
+      jump();
+    }
+  });
+  try{databaseUrl=localStorage.getItem(DATABASE_URL_KEY)||'';databaseUrlInput.value=databaseUrl;}catch(e){}
+  renderLeaderboard();
+  if(databaseUrl) syncOnline();
+  reset();
+})();
+</script>
+</body>
+</html>
